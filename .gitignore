@@ -1,0 +1,50 @@
+# Dependências
+/vendor
+/node_modules
+
+# Arquivos de ambiente
+.env
+.env.*
+!.env.example
+
+# Builds e arquivos compilados
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/app/public/*
+/storage/framework/*
+/storage/logs/*
+!storage/.gitkeep
+
+# Composer
+composer.phar
+composer.lock
+
+# NPM
+package-lock.json
+yarn.lock
+npm-debug.log
+yarn-error.log
+
+# IDE e editores
+.idea/
+.vscode/
+*.sublime-*
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Outros
+.phpunit.result.cache
+/.phpunit.cache
+/.phpstorm.meta.php
+/_ide_helper.php
+/_ide_helper_models.php
+/supervisor.log
+.env.backup
+*.log
+*.sqlite
+*.sqlite-journal
+docker-compose.override.yml
