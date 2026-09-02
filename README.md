@@ -1,58 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎵 Soundlore
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Uma plataforma web de música construída com Laravel, Inertia.js e React/TypeScript, com catálogo de artistas, músicas e gêneros, integração com APIs externas (Deezer e YouTube) e painel administrativo via Filament.
 
-## About Laravel
+## ✨ Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Catálogo de músicas organizado por gênero (`/generos/{genero}`)
+- Página de detalhes de cada música (`/musicas/{id}`)
+- Busca automática de capas de álbum e fotos de artista via **API pública do Deezer**
+- Reprodução/integração com **YouTube** para os vídeos das músicas
+- Painel administrativo em `/admin` (Filament) para gerenciar Artistas, Músicas, Gêneros, Curiosidades e Comentários
+- Interface tipada em **TypeScript** com React via Inertia.js
+- Estilização com Tailwind CSS (fontes: Bodoni Moda, Inter, Space Mono)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧱 Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Camada | Tecnologia |
+|---|---|
+| Backend | Laravel 13 (PHP 8.4) |
+| Frontend | React + TypeScript (via Inertia.js) |
+| Estilos | Tailwind CSS v4 (`@tailwindcss/vite`) |
+| Admin | Filament |
+| Banco de dados | MySQL 8.4 |
+| Ambiente | Docker via Laravel Sail |
+| APIs externas | Deezer (capas/fotos), YouTube Data API (vídeos) |
+| Build | Vite |
 
-## Learning Laravel
+## 📋 Pré-requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- [Docker](https://www.docker.com/) e Docker Compose
+- PHP 8.4+ (opcional na máquina host, o Sail já traz)
+- Composer
+- Node.js 20+ e npm
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🚀 Montando o ambiente de desenvolvimento
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone o repositório
+git clone git@github.com:SEU-USUARIO/soundlore.git
+cd soundlore
 
-php artisan boost:install
+# 2. Copie o arquivo de ambiente
+cp .env.example .env
+
+# 3. Instale as dependências PHP (via Composer + Docker, sem precisar de PHP local)
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+
+# 4. Suba os containers (app + MySQL)
+./vendor/bin/sail up -d
+
+# 5. Gere a chave da aplicação
+./vendor/bin/sail artisan key:generate
+
+# 6. Rode as migrations com os dados de exemplo (seeds)
+./vendor/bin/sail artisan migrate --seed
+
+# 7. Instale as dependências do frontend
+./vendor/bin/sail npm install
+
+# 8. Suba o servidor de desenvolvimento do Vite
+./vendor/bin/sail npm run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+A aplicação estará disponível em **http://localhost**.
 
-## Contributing
+### Criando um usuário admin (Filament)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+./vendor/bin/sail artisan make:filament-user
+```
 
-## Code of Conduct
+Acesse o painel em **http://localhost/admin**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Buscando capas e fotos via Deezer
 
-## Security Vulnerabilities
+```bash
+./vendor/bin/sail artisan songs:fetch-images
+# use --force para sobrescrever imagens já existentes
+./vendor/bin/sail artisan songs:fetch-images --force
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🔑 Variáveis de ambiente
 
-## License
+Além das variáveis padrão do Laravel, configure:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+# YouTube Data API (necessária chave de API do Google Cloud Console)
+YOUTUBE_API_KEY=
+
+# A API pública do Deezer não exige chave de autenticação
+```
+
+Veja `.env.example` para a lista completa.
+
+## 🗄️ Estrutura do banco (principais entidades)
+
+- **Artist** — artistas cadastrados
+- **Song** — músicas, vinculadas a artista e gênero
+- **Genre** — gêneros musicais (rock, pop, mpb, samba, jazz, ...)
+- **Curiosity** — curiosidades associadas a músicas/artistas
+- **Comment** — comentários de usuários nas músicas
+
+## 🛠️ Comandos úteis
+
+```bash
+# Rodar migrations do zero
+./vendor/bin/sail artisan migrate:fresh --seed
+
+# Ver rotas registradas
+./vendor/bin/sail artisan route:list
+
+# Tinker (console interativo)
+./vendor/bin/sail artisan tinker
+
+# Ver logs em tempo real
+./vendor/bin/sail logs -f
+
+# Rodar testes
+./vendor/bin/sail artisan test
+```
+
+## 📁 Estrutura de pastas (resumo)
+
+```
+soundlore/
+├── app/
+│   ├── Filament/Resources/     # Recursos do painel admin
+│   ├── Models/                 # Artist, Song, Genre, Curiosity, Comment
+│   └── Console/Commands/       # songs:fetch-images
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   └── js/
+│       ├── app.tsx             # Entry point React/Inertia
+│       ├── Layouts/
+│       └── Pages/              # Home, Show, etc.
+└── docker-compose.yml          # Laravel Sail
+```
+
+## 🗺️ Roadmap
+
+- [ ] Autenticação de usuários (favoritar músicas, comentar)
+- [ ] Busca/filtro avançado no catálogo
+- [ ] Testes automatizados (Feature/Unit)
+- [ ] Deploy em produção (CI/CD)
+
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch (`git checkout -b feature/nome-da-feature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nome-da-feature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Defina aqui a licença do projeto (ex: MIT).
