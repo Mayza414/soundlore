@@ -24,6 +24,7 @@ class SongController extends Controller
                 ->first();
 
             $featuredArtist = [
+                'id' => $latestArtist->id,
                 'name' => $latestArtist->name,
                 'bio' => $latestArtist->bio,
                 'image_url' => $latestArtist->image_url,
@@ -40,19 +41,19 @@ class SongController extends Controller
     }
 
     public function show($id)
-{
-    $song = Song::with([
-        'artist',
-        'genres',
-        'curiosities',
-        'comments.user'
-    ])->findOrFail($id);
+    {
+        $song = Song::with([
+            'artist',
+            'genres',
+            'curiosities',
+            'comments.user'
+        ])->findOrFail($id);
 
-    $genres = Genre::all();
+        $genres = Genre::all();
 
-    return Inertia::render('Songs/Show', [
-        'song' => $song,
-        'genres' => $genres,
-    ]);
-}
+        return Inertia::render('Songs/Show', [
+            'song' => $song,
+            'genres' => $genres,
+        ]);
+    }
 }

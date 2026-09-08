@@ -1,8 +1,8 @@
-import React from 'react';
 import { Link } from '@inertiajs/react';
 import { Play } from 'lucide-react';
 
 interface FeaturedArtist {
+  id: number;
   name: string;
   bio: string | null;
   image_url: string | null;
@@ -86,9 +86,12 @@ export default function HeroSection({ featuredArtist }: HeroSectionProps) {
               Ouvir Agora
             </Link>
           )}
-          <button className="font-label-sm px-8 py-4 border border-outline-variant text-on-surface rounded-full text-sm uppercase tracking-widest hover:bg-white/10 transition-colors">
+          <Link
+            href={`/artistas/${featuredArtist.id}`}
+            className="font-label-sm px-8 py-4 border border-outline-variant text-on-surface rounded-full text-sm uppercase tracking-widest hover:bg-white/10 transition-colors"
+          >
             Explorar Perfil
-          </button>
+          </Link>
         </div>
       </div>
     </section>

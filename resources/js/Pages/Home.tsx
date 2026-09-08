@@ -15,6 +15,7 @@ interface Song {
 }
 
 interface FeaturedArtist {
+  id: number;
   name: string;
   bio: string | null;
   image_url: string | null;
