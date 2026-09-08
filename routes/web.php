@@ -4,7 +4,9 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ArtistController;
 
+Route::get('/artistas/{artist}', [ArtistController::class, 'show'])->name('artists.show');
 Route::get('/', [SongController::class, 'index'])->name('home');
 Route::get('/musicas/{song}', [SongController::class, 'show'])->name('songs.show');
 Route::get('/generos/{genre}', [GenreController::class, 'show'])->name('genres.show');

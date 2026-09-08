@@ -74,6 +74,7 @@ export default function Show({ song, genres }: PageProps<ShowProps>) {
 
         <div className="bg-background">
           <ArtistBio
+            artistId={song.artist.id}
             name={song.artist.name}
             bio={song.artist.bio}
             imageUrl={song.artist.image_url}

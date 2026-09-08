@@ -14,5 +14,13 @@ class DatabaseSeeder extends Seeder
             SongSeeder::class,
             CuriositySeeder::class,
         ]);
+
+           $this->call([
+            GenreSeeder::class,
+            ArtistSeeder::class,
+            SongSeeder::class,
+            CuriositySeeder::class,
+            ChappellRoanSeeder::class,
+        ]);
     }
 }
