@@ -9,34 +9,33 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    /**
-     * Criar um novo comentário
-     */
-    public function store(Request $request, $songId)
+    public function store(Request $request, Song $song)
     {
-        $request->validate([
+        $validated = $request->validate([
             'content' => 'required|string|max:1000',
-            'parent_id' => 'nullable|exists:comments,id'
+            'parent_id' => [
+                'nullable',
+                'exists:comments,id',
+                function ($attribute, $value, $fail) use ($song) {
+                    if ($value && !Comment::where('id', $value)->where('song_id', $song->id)->exists()) {
+                        $fail('O comentário pai não pertence a esta música.');
+                    }
+                },
+            ],
         ]);
 
-        $comment = Comment::create([
+        Comment::create([
             'user_id' => Auth::id(),
-            'song_id' => $songId,
-            'content' => $request->content,
-            'parent_id' => $request->parent_id
+            'song_id' => $song->id,
+            'content' => $validated['content'],
+            'parent_id' => $validated['parent_id'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Comentário publicado!');
     }
 
-    /**
-     * Excluir um comentário
-     */
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
-
-        // Verificar se o usuário é o autor
         if ($comment->user_id !== Auth::id()) {
             abort(403, 'Você não tem permissão para excluir este comentário.');
         }
