@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, Heart, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import { usePlayer, type PlayableTrack } from '@/Contexts/PlayerContext';
 
@@ -33,13 +33,39 @@ export default function HeroSection({
   imageUrl,
   onImmersiveChange,
 }: HeroSectionProps) {
-  const { currentTrack, isPlaying, isMuted, currentTime, duration, play, toggle, seek, skip, toggleMute } = usePlayer();
+  const {
+    currentTrack,
+    isPlaying,
+    isMuted,
+    currentTime,
+    duration,
+    play,
+    toggle,
+    seek,
+    skip,
+    toggleMute,
+    takeOverWithVisiblePlayer,
+  } = usePlayer();
+
   const [showControls, setShowControls] = useState(true);
 
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isThisTrack = currentTrack?.songId === songId;
   const isThisPlaying = isThisTrack && isPlaying;
+
+  const videoContainerId = `hero-video-player-${songId}`;
+
+  // Enquanto esta for a faixa tocando, cria um player DE VERDADE, visível,
+  // dentro do elemento com id={videoContainerId}. Ao sair da página (ou
+  // trocar de faixa), a função de limpeza devolve o controle pro player
+  // escondido — o áudio continua, só o vídeo visível some.
+  useEffect(() => {
+    if (!isThisTrack) return;
+    const cleanup = takeOverWithVisiblePlayer(videoContainerId);
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isThisTrack]);
 
   const scheduleHide = useCallback(() => {
     if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
@@ -84,13 +110,24 @@ export default function HeroSection({
       onMouseMove={handleMouseMove}
       className="relative h-screen w-full overflow-hidden flex items-end pb-24 md:pb-32 px-4 md:px-16"
     >
-      <div className="absolute inset-0 z-0 bg-surface-container">
-        <div
-          className={`w-full h-full bg-cover bg-center transition-transform duration-[3000ms] ${
-            isThisPlaying ? 'scale-110' : 'scale-100'
-          }`}
-          style={{ backgroundImage: `url(${backgroundImage})` }}
-        />
+      <div className="absolute inset-0 z-0 bg-surface-container overflow-hidden">
+        {/* Onde o player visível de verdade é criado, quando esta é a
+            faixa tocando. Fica vazio (e não atrapalha nada) o resto do tempo. */}
+        {isThisTrack && (
+          <div id={videoContainerId} className="absolute inset-0 pointer-events-none" />
+        )}
+
+        {/* Imagem estática de fallback — some assim que o player visível
+            estiver de fato pronto e tocando esta faixa */}
+        {!isThisTrack && (
+          <div
+            className={`w-full h-full bg-cover bg-center transition-transform duration-[3000ms] ${
+              isThisPlaying ? 'scale-110' : 'scale-100'
+            }`}
+            style={{ backgroundImage: `url(${backgroundImage})`, backgroundPosition: 'center 20%' }}
+          />
+        )}
+
         <div
           className={`absolute inset-0 bg-gradient-to-t from-background transition-opacity duration-700 ${
             isThisPlaying ? 'via-background/20 to-transparent opacity-70' : 'via-background/60 to-transparent opacity-100'

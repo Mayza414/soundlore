@@ -6,14 +6,6 @@ use Inertia\Inertia;
 
 class GenreController extends Controller
 {
-    public function index()
-    {
-        $genres = Genre::withCount('songs')->get();
-        return inertia('Genres/Index', [
-            'genres' => $genres
-        ]);
-    }
-
     public function show(Genre $genre)
     {
         $songs = $genre->songs()->with('artist')->latest()->get();

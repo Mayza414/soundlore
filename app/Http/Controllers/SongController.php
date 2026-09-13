@@ -9,9 +9,15 @@ use Inertia\Inertia;
 
 class SongController extends Controller
 {
-    public function index()
+    public function index(int $id)
     {
-        $songs = Song::with(['artist', 'genres'])->take(6)->get();
+        $songs = Song::with([
+            'artist',
+            'genres',
+            'curiosities',
+            'comments.user',
+            'comments.replies.user',
+        ])->findOrFail($id);
         $genres = Genre::all();
 
         $featuredArtist = null;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Search } from 'lucide-react';
 
@@ -8,13 +7,15 @@ interface HeaderProps {
 
 const navItems = [
   { label: 'Gêneros', href: '/' },
-  { label: 'Artistas', comingSoon: true },
-  { label: 'Álbuns', comingSoon: true },
+  { label: 'Artistas', href: '/artistas' },
+  { label: 'Álbuns', href: '/albuns' },
   { label: 'Eventos', comingSoon: true },
 ];
 
 export default function Header({ onMenuClick }: HeaderProps) {
   const { url } = usePage();
+
+  const isActive = (href: string) => (href === '/' ? url === '/' : url.startsWith(href));
 
   return (
     <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
@@ -46,9 +47,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
               ) : (
                 <Link
                   key={item.label}
-                  href={item.href}
+                  href={item.href!}
                   className={`font-label-sm text-xs uppercase tracking-widest transition-colors pb-1 ${
-                    url === item.href
+                    isActive(item.href!)
                       ? 'text-primary border-b-2 border-primary'
                       : 'text-on-surface-variant hover:text-primary'
                   }`}

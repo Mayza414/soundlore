@@ -16,7 +16,10 @@ class FetchArtworkFromDeezer extends Command
     {
         $force = $this->option('force');
 
-        $artists = Artist::when(!$force, fn ($q) => $q->whereNull('image_url'))->get();
+        $artists = Artist::when(
+            !$force,
+            fn ($q) => $q->where(fn ($q2) => $q2->whereNull('image_url')->orWhere('image_url', ''))
+        )->get();
         $this->info("Buscando fotos para {$artists->count()} artista(s)...");
 
         foreach ($artists as $artist) {
@@ -50,7 +53,10 @@ class FetchArtworkFromDeezer extends Command
             usleep(300000);
         }
 
-        $songs = Song::with('artist')->when(!$force, fn ($q) => $q->whereNull('image_url'))->get();
+        $songs = Song::with('artist')->when(
+            !$force,
+            fn ($q) => $q->where(fn ($q2) => $q2->whereNull('image_url')->orWhere('image_url', ''))
+        )->get();
         $this->info("Buscando capas para {$songs->count()} música(s)...");
 
         foreach ($songs as $song) {
