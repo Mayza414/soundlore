@@ -14,27 +14,27 @@ class ArtistSeeder extends Seeder
             [
                 'name' => 'Djavan',
                 'bio' => 'Djavan é um cantor, compositor e multi-instrumentista brasileiro, um dos maiores nomes da MPB. Sua música mistura elementos do samba, jazz, funk e música africana.',
-                'image_url' => 'https://exemplo.com/djavan.jpg'
+                'image_url' => null,
             ],
             [
                 'name' => 'Queen',
                 'bio' => 'Queen é uma banda britânica de rock formada em 1970. Conhecida por sua diversidade musical, performances elaboradas e vocais harmoniosos.',
-                'image_url' => 'https://exemplo.com/queen.jpg'
+                'image_url' => null,
             ],
             [
                 'name' => 'Michael Jackson',
                 'bio' => 'Michael Jackson foi um cantor, compositor e dançarino americano, conhecido como o "Rei do Pop". Sua carreira e legado influenciaram a música e a cultura pop global.',
-                'image_url' => 'https://exemplo.com/michael.jpg'
+                'image_url' => null,
             ],
             [
                 'name' => 'Cartola',
                 'bio' => 'Cartola foi um cantor, compositor e poeta brasileiro, considerado um dos maiores nomes do samba. Sua obra é marcada pela poesia e melodia.',
-                'image_url' => 'https://exemplo.com/cartola.jpg'
+                'image_url' => null,
             ],
             [
                 'name' => 'The Beatles',
                 'bio' => 'The Beatles foi uma banda de rock inglesa formada em Liverpool em 1960. São amplamente considerados a banda mais influente de todos os tempos.',
-                'image_url' => 'https://exemplo.com/beatles.jpg'
+                'image_url' => null,
             ]
         ];
 
