@@ -28,11 +28,21 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </button>
 
         <div className="flex-1 md:flex-none flex items-center justify-center md:justify-start gap-10">
-          <Link href="/" className="text-center md:text-left">
-            <h1 className="font-display-lg text-2xl md:text-headline-lg tracking-tighter text-primary inline-block">
-              SOUNDLORE
-            </h1>
-          </Link>
+          <Link href="/" className="flex items-center justify-center md:justify-start">
+            <picture>
+              {/* Mobile: usa a versão menor */}
+              <source 
+                srcSet="/images/android-chrome-192x192.png" 
+                media="(max-width: 768px)" 
+              />
+              {/* Desktop: usa a versão maior */}
+              <img 
+                src="/images/android-chrome-512x512.png" 
+                alt="SoundLore" 
+                className="h-10 w-10 md:h-12 md:w-12 object-contain"
+              />
+            </picture>
+        </Link>
 
           <nav className="hidden lg:flex items-center gap-6">
             {navItems.map((item) =>
