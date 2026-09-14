@@ -6,8 +6,6 @@
 
 ---
 
-# 🎵 Soundlore
-
 **Descubra a história por trás da música.**
 
 Uma plataforma web para explorar artistas, músicas e gêneros — com curiosidades, capas e vídeos integrados automaticamente via APIs externas.

@@ -39,7 +39,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               <img 
                 src="/images/android-chrome-512x512.png" 
                 alt="SoundLore" 
-                className="h-10 w-10 md:h-12 md:w-12 object-contain"
+                className="h-50 w-50 md:h-21 md:w-21 object-contain"
               />
             </picture>
         </Link>
