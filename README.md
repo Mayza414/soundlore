@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/images/android-chrome-512x512.png" alt="SoundLore" width="150" />
+  <img src="public/images/logo_branca/android-chrome-512x512.pngandroid-chrome-512x512.png" alt="SoundLore" width="150" />
   <h1>🎵 SoundLore</h1>
   <p>Uma plataforma web de música construída com Laravel, Inertia.js e React/TypeScript.</p>
 
